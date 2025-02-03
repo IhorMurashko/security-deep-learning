@@ -32,5 +32,10 @@ public class CRUDController {
         return true;
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "secured admin test";
+    }
+
 
 }

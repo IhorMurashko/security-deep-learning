@@ -12,10 +12,19 @@ spring:
     show-sql: true
     open-in-view: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 359749146052-4h2rjs8ou9vle5gtkjsakdukltl79dol.apps.googleusercontent.com
+            client-secret: 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
 
 
 
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.security: TRACE
