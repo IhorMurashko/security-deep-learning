@@ -2,16 +2,29 @@ spring:
   application:
     name: securityDeepLearning
   datasource:
-    username: postgres
-    password: postgresql
-    url: jdbc:postgresql://localhost:5432/postgres
-    driver-class-name: org.postgresql.Driver
+    username: h2
+    password: h2
+    url: jdbc:h2:mem:h2db
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     open-in-view: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.H2Dialect
+  config:
+    import: "file:/home/developer/java_projects/credentials.properties"
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${oauth2.google.client-id}
+            client-secret: ${oauth2.google.client-secret}
+            scope:
+              - email
+              - profile
+
 
 
 
@@ -19,3 +32,6 @@ spring:
 server:
   port: 8080
 
+logging:
+  level:
+    org.springframework.security: TRACE
