@@ -1,7 +1,7 @@
 package com.deepLearning.security.controllers;
 
-import com.deepLearning.security.model.UserEntity;
-import com.deepLearning.security.repositories.UserRepo;
+import com.deepLearning.security.model.User;
+import com.deepLearning.security.repositories.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -9,26 +9,26 @@ import org.springframework.web.bind.annotation.*;
 //@RequiredArgsConstructor
 public class CRUDController {
 
-    private final UserRepo userRepo;
+    private final UserRepository userRepo;
 
-    public CRUDController(UserRepo userRepo) {
+    public CRUDController(UserRepository userRepo) {
         this.userRepo = userRepo;
     }
 
     @GetMapping("/get/${username}")
-    public UserEntity getUserByUsername(@RequestParam String username) {
-        return userRepo.findById(username).orElseThrow();
+    public User getUserByUsername(@RequestParam String username) {
+        return userRepo.findByUsername(username).orElseThrow();
     }
 
 
     @PostMapping("/save")
-    public UserEntity saveUser(@RequestBody UserEntity user) {
+    public User saveUser(@RequestBody User user) {
         return userRepo.save(user);
     }
 
     @DeleteMapping("/delete/${username}")
     public boolean deleteUserByUsername(@RequestParam String username) {
-        userRepo.deleteById(username);
+        userRepo.deleteByUsername(username);
         return true;
     }
 
