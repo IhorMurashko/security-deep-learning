@@ -24,10 +24,10 @@ spring:
             scope:
               - email
               - profile
-
-
-
-
+#              - openid
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+#            client-authentication-method: post
+            authorization-grant-type: authorization_code
 
 server:
   port: 8080

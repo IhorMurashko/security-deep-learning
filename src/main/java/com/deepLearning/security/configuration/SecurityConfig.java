@@ -3,6 +3,7 @@ package com.deepLearning.security.configuration;
 import com.deepLearning.security.jwt.JwtAccessDeniedHandler;
 import com.deepLearning.security.jwt.JwtAuthEntryPoint;
 import com.deepLearning.security.jwt.JwtAuthFilter;
+import com.deepLearning.security.jwt.OAuth2SuccessHandler;
 import com.deepLearning.security.securityServices.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtAuthEntryPoint jwtAuthEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
 
     @Bean
@@ -53,9 +55,17 @@ public class SecurityConfig {
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
                 .authorizeHttpRequests((request) -> {
-                    request.requestMatchers("/api/auth/**", "/error").permitAll()
-                            .requestMatchers("/home/**").authenticated();
+                    request.requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
+                            .requestMatchers("/home/**").authenticated()
+                            .anyRequest().permitAll();
                 })
+                .oauth2Login(oAuth2 ->
+                        oAuth2.authorizationEndpoint(authorization ->
+                                        authorization.baseUri("/oauth2/authorization"))
+                                .redirectionEndpoint(redirection ->
+                                        redirection.baseUri("/login/oauth2/code/*"))
+                                .successHandler(oAuth2SuccessHandler)
+                )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
