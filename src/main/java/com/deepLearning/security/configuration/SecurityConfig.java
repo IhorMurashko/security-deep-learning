@@ -3,7 +3,7 @@ package com.deepLearning.security.configuration;
 import com.deepLearning.security.jwt.JwtAccessDeniedHandler;
 import com.deepLearning.security.jwt.JwtAuthEntryPoint;
 import com.deepLearning.security.jwt.JwtAuthFilter;
-import com.deepLearning.security.jwt.OAuth2SuccessHandler;
+import com.deepLearning.security.oAuth2.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

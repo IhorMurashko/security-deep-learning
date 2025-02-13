@@ -22,7 +22,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtUtils;
+    private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
 
 
@@ -33,8 +33,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             final String token = extractToken(request);
 
-            if (token != null && jwtUtils.validateToken(token)) {
-                final String username = jwtUtils.getUsernameFromToken(token);
+            if (token != null && tokenProvider.validateToken(token)) {
+                final String username = tokenProvider.getUsernameFromToken(token);
                 UserDetails user = userDetailsService.loadUserByUsername(username);
 
                 if (user != null) {

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,11 +26,14 @@ public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public String authenticate(@NonNull AuthCredentials credentials) {
+    public Map<String, String> authenticate(@NonNull AuthCredentials credentials) {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(credentials.username());
 
-        return jwtTokenProvider.generateToken(userDetails);
+        final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
+        final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
+
+        return Map.of("refreshToken",refreshToken,"accessToken", accessToken);
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.deepLearning.security.jwt;
+package com.deepLearning.security.oAuth2;
 
+import com.deepLearning.security.jwt.JwtTokenProvider;
 import com.deepLearning.security.model.Roles;
 import com.deepLearning.security.model.User;
 import com.deepLearning.security.userServices.UserService;
@@ -60,7 +61,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         }
 
 
-        final String token = jwtTokenProvider.generateToken(user);
+        final String token = jwtTokenProvider.generateAccessToken(user);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/home/user")
                 .queryParam("token", token)
