@@ -9,6 +9,7 @@ import com.deepLearning.security.userServices.UserService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,13 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String authenticate(@NonNull AuthCredentials credentials) {
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(credentials.username());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(credentials.username());
 
         return jwtTokenProvider.generateToken(userDetails);
     }
@@ -41,14 +42,15 @@ public class AuthServiceImpl implements AuthService {
                     String.format("user with username %s already exist", credentials.username()));
 
         } else {
-             userService.save(new User(
+            userService.save(new User(
                     credentials.username(),
                     passwordEncoder.encode(credentials.password()),
+                    null,
                     new ArrayList<String>() {{
                         add(Roles.ROLE_USER.name());
                     }}
             ));
-             return true;
+            return true;
         }
 
 

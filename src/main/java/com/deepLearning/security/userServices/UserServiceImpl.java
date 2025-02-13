@@ -4,13 +4,16 @@ import com.deepLearning.security.model.User;
 import com.deepLearning.security.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepo;
 
@@ -48,4 +51,12 @@ public class UserServiceImpl implements UserService {
     public boolean isExistUsername(@NonNull String username) {
         return userRepo.existsUserByUsername(username);
     }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
 }
