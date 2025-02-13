@@ -23,10 +23,19 @@ spring:
             client-secret: ${oauth2.google.client-secret}
             scope:
               - email
-              - profile
-#              - openid
+              - profilelogin/github
+              - openid
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#            client-authentication-method: post
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+          github:
+            client-id: ${oauth2.github.client-id}
+            client-secret: ${oauth2.github.client-secret}
+            scope:
+              - read:user
+              - user:email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
 
 server:
