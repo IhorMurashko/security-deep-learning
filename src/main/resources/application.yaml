@@ -37,6 +37,15 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
+  docker:
+    compose:
+      enabled: true
+      file: docker-compose.yaml
+      lifecycle-management: start_and_stop
+  data:
+    redis:
+      port: 6379
+      host: localhost
 
 server:
   port: 8080
