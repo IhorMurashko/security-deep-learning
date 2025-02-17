@@ -30,7 +30,7 @@ public class JwtTokenProvider {
                 .subject(userDetails.getUsername())
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .claim("token_type", "refresh_token")
+                .claim("token_type", "refreshToken")
                 .signWith(key)
                 .compact();
     }
@@ -38,14 +38,15 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(UserDetails userDetails) {
         Date now = new Date();
-        // Срок действия access-токена (например, 1 час)
-        long accessTokenExpirationMs = 3600000;
+        // Срок действия access-токена (3 min)
+        long accessTokenExpirationMs = 180000;
         Date expirationDate = new Date(now.getTime() + accessTokenExpirationMs);
 
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(now)
                 .expiration(expirationDate)
+                .claim("token_type", "accessToken")
                 .claim("authorities", userDetails.getAuthorities())
                 .signWith(key)
                 .compact();

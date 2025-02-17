@@ -54,9 +54,13 @@ public class SecurityConfig {
                                 .authenticationEntryPoint(jwtAuthEntryPoint)
                                 .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request) -> {
-                    request.requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
+                    request
+                            .requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
                             .requestMatchers("/home/**").authenticated()
+                            .requestMatchers("/api/log/logout").permitAll()
                             .anyRequest().permitAll();
                 })
                 .oauth2Login(oAuth2 ->

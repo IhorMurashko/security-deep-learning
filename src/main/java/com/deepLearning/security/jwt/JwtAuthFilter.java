@@ -1,5 +1,6 @@
 package com.deepLearning.security.jwt;
 
+import com.deepLearning.security.redis.RevokedTokenService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
+    private final RevokedTokenService revokedTokenService;
 
 
     @Override
@@ -34,6 +36,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             final String token = extractToken(request);
 
             if (token != null && tokenProvider.validateToken(token)) {
+                if (revokedTokenService.isTokenRevoked(token)) {
+                    throw new JwtException("Token has been revoked");
+                }
+                String token_type = tokenProvider.extractClaimFromToken(token, claims
+                        -> claims.get("token_type", String.class));
+                if (token_type != null && token_type.equals("refreshToken")) {
+                    throw new JwtException("Refresh token can't be used for authentication");
+                }
+
                 final String username = tokenProvider.getUsernameFromToken(token);
                 UserDetails user = userDetailsService.loadUserByUsername(username);
 
