@@ -1,6 +1,7 @@
 package com.deepLearning.security.securityServices;
 
 import com.deepLearning.security.dto.AuthCredentials;
+import com.deepLearning.security.dto.TokensDto;
 import com.deepLearning.security.model.User;
 
 import java.util.Map;
@@ -30,9 +31,9 @@ public interface AuthService {
      * Authenticates a user based on the provided credentials.
      *
      * @param credentials the authentication credentials containing username and password.
-     * @return a map containing the generated tokens, typically with keys "accessToken" and "refreshToken".
+     * @return a {@link TokensDto} containing the generated access and refresh tokens.
      */
-    Map<String, String> authenticate(AuthCredentials credentials);
+    TokensDto authenticate(AuthCredentials credentials);
 
     /**
      * Registers a new user with the provided credentials.

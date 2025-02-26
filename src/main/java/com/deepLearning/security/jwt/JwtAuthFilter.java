@@ -1,6 +1,6 @@
 package com.deepLearning.security.jwt;
 
-import com.deepLearning.security.redis.RevokedTokenService;
+import com.deepLearning.security.redis.RevokedTokenServiceImpl;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -57,7 +57,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     /**
      * RevokedTokenService is used to check if a token has been revoked (e.g., during logout).
      */
-    private final RevokedTokenService revokedTokenService;
+    private final RevokedTokenServiceImpl revokedTokenServiceImpl;
 
     /**
      * Filters each incoming HTTP request to perform JWT authentication.
@@ -81,7 +81,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             final String token = extractToken(request);
 
             if (token != null && tokenProvider.validateToken(token)) {
-                if (revokedTokenService.isTokenRevoked(token)) {
+                if (revokedTokenServiceImpl.isTokenRevoked(token)) {
                     throw new JwtException("Token has been revoked");
                 }
                 String tokenType = tokenProvider.extractClaimFromToken(token, claims ->

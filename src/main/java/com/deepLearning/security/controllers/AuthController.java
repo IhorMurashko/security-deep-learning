@@ -1,11 +1,13 @@
 package com.deepLearning.security.controllers;
 
 import com.deepLearning.security.dto.AuthCredentials;
+import com.deepLearning.security.dto.TokensDto;
 import com.deepLearning.security.jwt.JwtTokenManager;
 import com.deepLearning.security.securityServices.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,6 +55,7 @@ public class AuthController {
      * @return ResponseEntity with appropriate HTTP status code
      */
     @PostMapping("/sign-up")
+    @PreAuthorize("isAnonymous()")
     public ResponseEntity<HttpStatus> signUp(@RequestBody AuthCredentials credentials) {
         boolean result = authService.registration(credentials);
         return result
@@ -67,11 +70,12 @@ public class AuthController {
      * returns a map containing the generated tokens (e.g., access and refresh tokens) with HTTP status 200 (OK).
      *
      * @param credentials the authentication credentials (e.g., username and password)
-     * @return ResponseEntity containing a map of tokens and HTTP status 200 (OK)
+     * @return ResponseEntity containing an object with tokens and HTTP status 200 (OK)
      */
     @PostMapping("/sign-in")
-    public ResponseEntity<Map<String, String>> signIn(@RequestBody AuthCredentials credentials) {
-        Map<String, String> tokens = authService.authenticate(credentials);
+    @PreAuthorize("isAnonymous()")
+    public ResponseEntity<TokensDto> signIn(@RequestBody AuthCredentials credentials) {
+        TokensDto tokens = authService.authenticate(credentials);
         return new ResponseEntity<>(tokens, HttpStatus.OK);
     }
 
@@ -82,13 +86,15 @@ public class AuthController {
      * returns a new set of tokens with HTTP status 200 (OK). Otherwise, returns HTTP status 401 (Unauthorized)
      * with an error message.
      *
-     * @param request a map containing the refresh token (expected key is defined in the token manager)
+     * @param tokens an object containing the refresh token (expected key is defined in the token manager)
      * @return ResponseEntity containing new tokens if refresh is successful, or an error message if not.
      */
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
-        Map<String, String> tokens = jwtTokenManager.manageTokens(request);
-        if (tokens != null && !tokens.isEmpty()) {
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> refreshToken(@RequestBody TokensDto tokens) {
+        TokensDto tokensDto = jwtTokenManager.manageTokens(tokens);
+
+        if (tokensDto != null ) {
             return new ResponseEntity<>(tokens, HttpStatus.OK);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");

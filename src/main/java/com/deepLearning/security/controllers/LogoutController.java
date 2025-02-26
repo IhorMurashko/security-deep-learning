@@ -1,15 +1,14 @@
 package com.deepLearning.security.controllers;
 
+import com.deepLearning.security.dto.TokensDto;
 import com.deepLearning.security.jwt.JwtTokenProvider;
-import com.deepLearning.security.redis.RevokedTokenService;
+import com.deepLearning.security.redis.RevokedTokenServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 
 /**
@@ -32,7 +31,7 @@ import java.util.Map;
  * }
  * </pre>
  *
- * @see RevokedTokenService for token revocation logic.
+ * @see RevokedTokenServiceImpl for token revocation logic.
  * @see JwtTokenProvider for token-related operations.
  */
 @RestController
@@ -43,7 +42,7 @@ public class LogoutController {
     /**
      * Service responsible for revoking tokens by storing them in a blacklist (e.g., in Redis).
      */
-    private final RevokedTokenService revokedTokenService;
+    private final RevokedTokenServiceImpl revokedTokenServiceImpl;
 
     /**
      * Utility for JWT token operations. Although injected here, it may be used for
@@ -58,12 +57,12 @@ public class LogoutController {
      * The tokens are processed by {@code revokedTokenService.revokeToken}, which handles
      * storing the tokens with appropriate expiration.
      *
-     * @param tokens a map containing token key-value pairs (e.g., accessToken, refreshToken)
+     * @param tokens a object containing tokens value (e.g., accessToken, refreshToken)
      * @return a ResponseEntity with a success message and HTTP status 200 (OK)
      */
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody Map<String, String> tokens) {
-        revokedTokenService.revokeToken(tokens);
+    public ResponseEntity<?> logout(@RequestBody TokensDto tokens) {
+        revokedTokenServiceImpl.revokeToken(tokens);
         return ResponseEntity.ok("Logged successfully");
     }
 }

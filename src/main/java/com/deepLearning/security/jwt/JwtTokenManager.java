@@ -1,13 +1,11 @@
 package com.deepLearning.security.jwt;
 
+import com.deepLearning.security.dto.TokensDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * JwtTokenManager is responsible for managing JWT tokens, particularly for refreshing tokens.
@@ -19,15 +17,7 @@ import java.util.Map;
  * generate a new access token. Additionally, if the refresh token is about to expire (e.g., within one day),
  * a new refresh token is also generated.
  * <p>
- * The result is returned as a map containing the new tokens, with keys "accessToken" and optionally "refreshToken".
- *
- * <p><b>Usage Example:</b></p>
- * <pre>
- * Map&lt;String, String&gt; request = new HashMap&lt;&gt;();
- * request.put("refreshToken", "your_refresh_token_here");
- * Map&lt;String, String&gt; tokens = jwtTokenManager.refreshTokens(request);
- * // tokens now contains a new access token and, if applicable, a new refresh token.
- * </pre>
+ * The result is returned as an object containing the new tokens - "accessToken" and optionally "refreshToken".
  *
  * @see JwtTokenProvider for token operations.
  * @see UserDetailsService for retrieving user details.
@@ -59,24 +49,28 @@ public class JwtTokenManager {
      *   <li>Returns a map containing the new access token and, if applicable, the new refresh token.</li>
      * </ol>
      *
-     * @param request a map containing the key "refreshToken" with the current refresh token value.
-     * @return a map containing the key "accessToken" and, if refreshed, the key "refreshToken" with the corresponding new tokens.
+     * @param tokens an object containing the "refreshToken" with the current refresh token value.
+     * @return an object containing the "accessToken" and, if refreshed, the "refreshToken" with the corresponding new tokens.
      */
-    public Map<String, String> manageTokens(Map<String, String> request) {
-        final String refreshToken = request.get("refreshToken");
-        Map<String, String> tokens = new HashMap<>();
+    public TokensDto manageTokens(TokensDto tokens) {
+        final String refreshToken = tokens.refreshToken();
+        String newAccessToken = null;
+        String newRefreshToken = null;
 
         if (jwtTokenProvider.validateToken(refreshToken)) {
             String username = jwtTokenProvider.getUsernameFromToken(refreshToken);
             UserDetails user = userDetailsService.loadUserByUsername(username);
-            final String newAccessToken = jwtTokenProvider.generateAccessToken(user);
-            tokens.put("accessToken", newAccessToken);
+            newAccessToken = jwtTokenProvider.generateAccessToken(user);
 
             if (jwtTokenProvider.isRefreshTokenExpiredSoon(refreshToken)) {
-                String generatedRefreshToken = jwtTokenProvider.generateRefreshToken(user);
-                tokens.put("refreshToken", generatedRefreshToken);
+                newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
             }
         }
-        return tokens;
+
+        return new TokensDto(newAccessToken,
+                newRefreshToken == null
+                        ? newRefreshToken
+                        : tokens.refreshToken()
+        );
     }
 }

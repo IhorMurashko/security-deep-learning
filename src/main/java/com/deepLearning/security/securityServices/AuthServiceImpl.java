@@ -1,6 +1,7 @@
 package com.deepLearning.security.securityServices;
 
 import com.deepLearning.security.dto.AuthCredentials;
+import com.deepLearning.security.dto.TokensDto;
 import com.deepLearning.security.exceptions.UserAlreadyExist;
 import com.deepLearning.security.jwt.JwtTokenProvider;
 import com.deepLearning.security.model.Roles;
@@ -14,11 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.Map;
 
 
 /**
- * AuthServiceImpl implements the {@link com.deepLearning.security.AuthService} interface and provides
+ * AuthServiceImpl implements the {@link com.deepLearning.security.securityServices.AuthService} interface and provides
  * concrete methods for user authentication and registration.
  * <p>
  * The implementation utilizes:
@@ -66,14 +66,14 @@ public class AuthServiceImpl implements AuthService {
      * and returns them in an immutable map.
      *
      * @param credentials the authentication credentials (username and password).
-     * @return a map containing the keys "accessToken" and "refreshToken".
+     * @return a {@link TokensDto} containing the generated access and refresh tokens.
      */
     @Override
-    public Map<String, String> authenticate(@NonNull AuthCredentials credentials) {
+    public TokensDto authenticate(@NonNull AuthCredentials credentials) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(credentials.username());
         final String accessToken = jwtTokenProvider.generateAccessToken(userDetails);
         final String refreshToken = jwtTokenProvider.generateRefreshToken(userDetails);
-        return Map.of("refreshToken", refreshToken, "accessToken", accessToken);
+        return new TokensDto(accessToken, refreshToken);
     }
 
     /**

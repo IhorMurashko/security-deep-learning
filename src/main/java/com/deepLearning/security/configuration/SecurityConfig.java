@@ -137,7 +137,7 @@ public class SecurityConfig {
                     request
                             .requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
                             .requestMatchers("/home/**").authenticated()
-                            .requestMatchers("/api/log/logout").permitAll()
+                            .requestMatchers("/api/log/logout").authenticated()
                             .anyRequest().permitAll();
                 })
                 // Configure OAuth2 login with custom endpoints and success handler
