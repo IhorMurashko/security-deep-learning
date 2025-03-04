@@ -1,8 +1,7 @@
 package com.deepLearning.security.dto;
 
-
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.NonNull;
-
 
 /**
  * AuthCredentials is a simple data transfer object (DTO) that represents
@@ -22,8 +21,14 @@ import lombok.NonNull;
  * AuthCredentials credentials = new AuthCredentials("john.doe", "securePassword123");
  * </pre>
  */
+@Schema(description = "DTO containing user authentication credentials (username and password)")
 public record AuthCredentials(
-        @NonNull String username,
-        @NonNull String password
+        @NonNull
+        @Schema(description = "The username of the user attempting to authenticate", example = "john.doe")
+        String username,
+
+        @NonNull
+        @Schema(description = "The user's password", example = "securePassword123")
+        String password
 ) {
 }

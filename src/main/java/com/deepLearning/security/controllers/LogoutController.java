@@ -3,13 +3,16 @@ package com.deepLearning.security.controllers;
 import com.deepLearning.security.dto.TokensDto;
 import com.deepLearning.security.jwt.JwtTokenProvider;
 import com.deepLearning.security.redis.RevokedTokenServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 /**
  * LogoutController provides an endpoint for revoking user tokens during logout.
@@ -21,22 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>
  * The controller is designed for use in stateless RESTful applications using JWT-based security,
  * where explicit token revocation is necessary during logout.
- *
- * <p><b>Usage Example:</b></p>
- * <pre>
- * POST /api/log/logout
- * {
- *   "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
- *   "refreshToken": "def50200a1b2..."
- * }
- * </pre>
- *
- * @see RevokedTokenServiceImpl for token revocation logic.
- * @see JwtTokenProvider for token-related operations.
  */
 @RestController
 @RequestMapping("/api/log")
 @RequiredArgsConstructor
+@Tag(name = "Logout Controller", description = "API for revoking tokens upon user logout")
 public class LogoutController {
 
     /**
@@ -57,12 +49,18 @@ public class LogoutController {
      * The tokens are processed by {@code revokedTokenService.revokeToken}, which handles
      * storing the tokens with appropriate expiration.
      *
-     * @param tokens a object containing tokens value (e.g., accessToken, refreshToken)
+     * @param tokens a object containing token values (e.g., accessToken, refreshToken)
      * @return a ResponseEntity with a success message and HTTP status 200 (OK)
      */
+    @Operation(summary = "User Logout", description = "Revokes tokens to prevent further authentication with them")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully logged out"),
+            @ApiResponse(responseCode = "400", description = "Invalid token format"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - token is missing or invalid")
+    })
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody TokensDto tokens) {
         revokedTokenServiceImpl.revokeToken(tokens);
-        return ResponseEntity.ok("Logged successfully");
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
