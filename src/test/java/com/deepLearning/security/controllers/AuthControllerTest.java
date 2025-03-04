@@ -75,6 +75,7 @@ class AuthControllerTest {
 
     @Test
     @WithMockUser(username = "user", password = "password", roles = "USER")
+    @DisplayName("accessDenied_whenUserIsAuthentication")
     void getAccessDenied_whenUserIsAuthentication() throws Exception {
 
 
