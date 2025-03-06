@@ -136,7 +136,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> {
                     request
                             .requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
-                            .requestMatchers("/home/**").authenticated()
+                            .requestMatchers("/home/user", "/home/admin").authenticated()
                             .requestMatchers("/api/log/logout").authenticated()
                             .anyRequest().permitAll();
                 })
