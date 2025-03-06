@@ -67,6 +67,7 @@ public class HomeController {
     }
 
     @GetMapping("/free")
+    @PreAuthorize("permitAll()")
     public String getFree() {
         return "Hello free: " + LocalDateTime.now();
     }
