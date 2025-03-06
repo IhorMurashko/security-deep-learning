@@ -65,4 +65,11 @@ public class HomeController {
     public String getAdmin() {
         return "Hello admin: " + LocalDateTime.now();
     }
+
+    @GetMapping("/free")
+    @PreAuthorize("permitAll()")
+    public String getFree() {
+        return "Hello free: " + LocalDateTime.now();
+    }
+
 }
