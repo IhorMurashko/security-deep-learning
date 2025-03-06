@@ -6,9 +6,11 @@ import com.deepLearning.security.redis.RevokedTokenServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +60,8 @@ public class LogoutController {
             @ApiResponse(responseCode = "400", description = "Invalid token format"),
             @ApiResponse(responseCode = "401", description = "Unauthorized - token is missing or invalid")
     })
+    @SecurityRequirement(name = "JWT")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody TokensDto tokens) {
         revokedTokenServiceImpl.revokeToken(tokens);

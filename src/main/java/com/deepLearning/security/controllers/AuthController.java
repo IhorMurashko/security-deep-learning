@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -58,6 +59,7 @@ public class AuthController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = TokensDto.class))),
             @ApiResponse(responseCode = "401", description = "Invalid refresh token")
     })
+    @SecurityRequirement(name = "JWT")
     @PostMapping("/refresh-token")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> refreshToken(@RequestBody TokensDto tokens) {

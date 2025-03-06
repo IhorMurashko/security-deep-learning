@@ -3,6 +3,7 @@ package com.deepLearning.security.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,8 @@ public class HomeController {
             @ApiResponse(responseCode = "200", description = "Successfully accessed user endpoint"),
             @ApiResponse(responseCode = "403", description = "Access denied - user does not have the required role")
     })
+    @SecurityRequirement(name = "JWT")
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/user")
     public String getUser() {
@@ -55,6 +58,8 @@ public class HomeController {
             @ApiResponse(responseCode = "200", description = "Successfully accessed admin endpoint"),
             @ApiResponse(responseCode = "403", description = "Access denied - user does not have the required role")
     })
+    @SecurityRequirement(name = "JWT")
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
     public String getAdmin() {
