@@ -34,8 +34,8 @@ public class AuthController {
     @PostMapping("/sign-up")
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<HttpStatus> signUp(@RequestBody AuthCredentials credentials) {
-        boolean result = authService.registration(credentials);
-        return result
+        boolean isRegistered = authService.registration(credentials);
+        return isRegistered
                 ? new ResponseEntity<>(HttpStatus.CREATED)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
