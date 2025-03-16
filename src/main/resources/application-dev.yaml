@@ -45,3 +45,7 @@ spring:
     redis:
       port: 6379
       host: localhost
+
+logging:
+  level:
+    org.springframework.security: TRACE
