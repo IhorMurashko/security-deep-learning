@@ -15,8 +15,8 @@ spring:
       client:
         registration:
           google:
-            client-id: ${OAUTH2_GOOGLE_CLIENT_ID}
-            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET}
+            client-id: ${OAUTH2_GOOGLE_CLIENT_ID:fake-google-client-id}
+            client-secret: ${OAUTH2_GOOGLE_CLIENT_SECRET:fake-google-client-secret}
             scope:
               - email
               - profile
