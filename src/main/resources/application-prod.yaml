@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL:fake-url}
+    username: ${DATABASE_USERNAME:fake-username}
+    password: ${DATABASE_PASSWORD:fake-password}
   jpa:
     hibernate:
       ddl-auto: update
