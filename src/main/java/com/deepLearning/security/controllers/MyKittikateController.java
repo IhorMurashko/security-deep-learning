@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/kit")
+@RequestMapping("/kit-")
 @RequiredArgsConstructor
 public class MyKittikateController {
 
-    @GetMapping(value = "/-kat",
+    @GetMapping(value = "/kat",
             produces = MediaType.IMAGE_JPEG_VALUE)
     public ResponseEntity<Resource> kat() {
      Resource image = new ClassPathResource("static/photo.jpg");
