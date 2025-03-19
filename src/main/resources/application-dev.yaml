@@ -27,15 +27,6 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
-          github:
-            client-id: ${oauth2.github.client-id}
-            client-secret: ${oauth2.github.client-secret}
-            scope:
-              - read:user
-              - user:email
-            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-            client-authentication-method: client_secret_post
-            authorization-grant-type: authorization_code
   docker:
     compose:
       enabled: true
