@@ -43,7 +43,7 @@ import java.util.List;
  * @see org.springframework.security.core.userdetails.UserDetails
  */
 @Entity
-@Table(name = "security_users")
+@Table(name = "users")
 @Getter
 @Setter
 @ToString(exclude = "password")
