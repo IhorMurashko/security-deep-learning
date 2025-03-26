@@ -8,6 +8,7 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    open-in-view: true
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: true
   h2:
@@ -18,8 +19,8 @@ spring:
     init:
       mode: always
 
-  config:
-    import: "file:/home/developer/java_projects/credentials.properties"
+#  config:
+#    import: "file:/home/developer/java_projects/credentials.properties"
   security:
     oauth2:
       client:
