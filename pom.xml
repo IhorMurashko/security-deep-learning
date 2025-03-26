@@ -2,7 +2,7 @@
 <project
         xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -28,12 +28,23 @@
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
             </properties>
+
             <dependencies>
+
                 <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
                 <dependency>
                     <groupId>org.postgresql</groupId>
                     <artifactId>postgresql</artifactId>
                     <version>42.7.5</version>
+                </dependency>
+
+
+                <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-database-postgresql -->
+                <dependency>
+                    <groupId>org.flywaydb</groupId>
+                    <artifactId>flyway-database-postgresql</artifactId>
+                    <version>11.4.1</version>
+                    <scope>runtime</scope>
                 </dependency>
 
             </dependencies>
@@ -63,6 +74,7 @@
                 </dependency>
 
 
+
                 <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
                 <dependency>
                     <groupId>com.h2database</groupId>
@@ -73,33 +85,30 @@
                 </dependency>
 
 
-
-
                 <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-docker-compose -->
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-docker-compose</artifactId>
                     <version>3.4.2</version>
                 </dependency>
+
+
+
             </dependencies>
         </profile>
 
     </profiles>
 
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
+
     <developers>
+        <developer>
+            <name>Ihor Murashko</name>
+            <email>i.murashko0911@gmail.com</email>
+        </developer>
         <developer/>
     </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
 
+    <url>https://github.com/IhorMurashko/security-deep-learning</url>
 
     <properties>
         <java.version>17</java.version>
@@ -132,7 +141,6 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>3.4.2</version>
         </dependency>
-
 
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->

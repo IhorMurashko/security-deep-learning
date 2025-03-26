@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.Set;
 
 
 /**
@@ -98,8 +99,8 @@ public class AuthServiceImpl implements AuthService {
                     credentials.username(),
                     passwordEncoder.encode(credentials.password()),
                     null,
-                    Collections.singletonList(Roles.ROLE_USER.name())
-            ));
+                   Set.of(Roles.ROLE_USER))
+            );
             return true;
         }
     }

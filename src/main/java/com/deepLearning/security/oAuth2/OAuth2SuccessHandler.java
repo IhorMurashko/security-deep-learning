@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.Set;
 
 /**
  * OAuth2SuccessHandler handles successful OAuth2 authentication events.
@@ -70,12 +70,13 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         if (userService.isExistUsername(email)) {
             user = (User) userDetailsService.loadUserByUsername(email);
         } else {
+
             // Create new user with default role ROLE_USER using an immutable list
             user = userService.save(new User(
                     email,
                     null,
                     oAuth2User.getAttribute("picture"),
-                    Collections.singletonList(Roles.ROLE_USER.name())
+                    Set.of(Roles.ROLE_USER)
             ));
         }
 

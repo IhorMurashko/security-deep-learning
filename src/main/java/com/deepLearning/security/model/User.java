@@ -9,9 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents an application user and implements Spring Security's UserDetails interface.
@@ -43,7 +43,7 @@ import java.util.List;
  * @see org.springframework.security.core.userdetails.UserDetails
  */
 @Entity
-@Table(name = "security_users")
+@Table(name = "users")
 @Getter
 @Setter
 @ToString(exclude = "password")
@@ -72,13 +72,20 @@ public class User implements UserDetails {
      * The URL or path to the user's profile image.
      */
     private String image;
+    private boolean isAccountNonExpired=true;
+    private boolean isAccountNonLocked=true;
+    private boolean isCredentialsNonExpired=true;
+    private boolean isEnabled=true;
 
     /**
      * The list of roles assigned to the user (e.g., "ROLE_USER", "ROLE_ADMIN").
      * This field is eagerly fetched from the database.
      */
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER, targetClass = Roles.class)
+    @CollectionTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Roles> roles = new HashSet<>();
 
     /**
      * Constructs a new User with the specified username, password, image, and roles.
@@ -88,7 +95,7 @@ public class User implements UserDetails {
      * @param image    the URL or path to the user's profile image.
      * @param roles    a list of roles assigned to the user.
      */
-    public User(String username, String password, String image, List<String> roles) {
+    public User(String username, String password, String image, Set<Roles> roles) {
         this.username = username;
         this.password = password;
         this.image = image;
@@ -104,9 +111,7 @@ public class User implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        return this.roles;
     }
 
     /**
@@ -116,7 +121,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return this.isAccountNonExpired;
     }
 
     /**
@@ -126,7 +131,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.isAccountNonLocked;
     }
 
     /**
@@ -136,7 +141,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return this.isCredentialsNonExpired;
     }
 
     /**
@@ -146,6 +151,6 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.isEnabled;
     }
 }

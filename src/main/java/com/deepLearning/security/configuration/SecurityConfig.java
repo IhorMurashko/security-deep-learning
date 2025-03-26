@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -138,8 +139,12 @@ public class SecurityConfig {
                             .requestMatchers("/api/auth/**", "/error", "/oauth2/**").permitAll()
                             .requestMatchers("/home/user", "/home/admin").authenticated()
                             .requestMatchers("/api/log/logout").authenticated()
+                            .requestMatchers("/h2-console/**").permitAll()
                             .anyRequest().permitAll();
                 })
+                .headers(headers->headers.frameOptions(
+                        HeadersConfigurer.FrameOptionsConfig::disable
+                ))
                 // Configure OAuth2 login with custom endpoints and success handler
                 .oauth2Login(oAuth2 ->
                         oAuth2.authorizationEndpoint(authorization ->
