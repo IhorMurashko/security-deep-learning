@@ -1,6 +1,7 @@
 package com.deepLearning.security.repositories;
 
 import com.deepLearning.security.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +33,7 @@ import java.util.Optional;
  * </pre>
  */
 @Repository
-public interface UserRepository extends ListCrudRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Retrieves a {@link User} by their username.
