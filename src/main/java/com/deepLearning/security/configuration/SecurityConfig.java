@@ -142,9 +142,9 @@ public class SecurityConfig {
                             .requestMatchers("/h2-console/**").permitAll()
                             .anyRequest().permitAll();
                 })
-                .headers(headers->headers.frameOptions(
-                        HeadersConfigurer.FrameOptionsConfig::disable
-                ))
+//                .headers(headers->headers.frameOptions(
+//                        HeadersConfigurer.FrameOptionsConfig::disable
+//                ))
                 // Configure OAuth2 login with custom endpoints and success handler
                 .oauth2Login(oAuth2 ->
                         oAuth2.authorizationEndpoint(authorization ->
