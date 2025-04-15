@@ -1,10 +1,10 @@
 -- Создаём пользователя
 INSERT INTO users
-(id, username, password, image,
+(id, username, password,age, image,
  is_account_non_expired, is_account_non_locked,
  is_credentials_non_expired, is_enabled)
 VALUES
-    (1, 'john.doe', 'securePassword', '/images/john.png',
+    (1, 'john.doe', 'securePassword',20, '/images/john.png',
      true, true, true, true);
 
 -- Добавляем роли
