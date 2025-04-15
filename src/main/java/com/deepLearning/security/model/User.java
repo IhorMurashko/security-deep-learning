@@ -55,6 +55,8 @@ public class User {
     @Column(unique = true)
     private String username;
 
+    private int age;
+
     /**
      * The password of the user. In production, this should be stored in an encoded form.
      */
