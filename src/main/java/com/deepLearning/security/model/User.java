@@ -1,15 +1,8 @@
 package com.deepLearning.security.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,8 +40,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = "password")
-@NoArgsConstructor
-public class User implements UserDetails {
+public class User {
 
     /**
      * The unique identifier of the user. It is auto-generated using the IDENTITY strategy.
@@ -63,19 +55,25 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
 
+
+
     /**
      * The password of the user. In production, this should be stored in an encoded form.
      */
     private String password;
+    /**
+     * The age of the user.
+     */
+    private int age;
 
     /**
      * The URL or path to the user's profile image.
      */
     private String image;
-    private boolean isAccountNonExpired=true;
-    private boolean isAccountNonLocked=true;
-    private boolean isCredentialsNonExpired=true;
-    private boolean isEnabled=true;
+    private boolean isAccountNonExpired;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
+    private boolean isEnabled;
 
     /**
      * The list of roles assigned to the user (e.g., "ROLE_USER", "ROLE_ADMIN").
@@ -100,57 +98,19 @@ public class User implements UserDetails {
         this.password = password;
         this.image = image;
         this.roles = roles;
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
     }
 
-    /**
-     * Returns the authorities granted to the user.
-     * <p>
-     * The roles are mapped to {@link SimpleGrantedAuthority} instances.
-     *
-     * @return a collection of granted authorities, never {@code null}.
-     */
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+    public User() {
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
     }
 
-    /**
-     * Indicates whether the user's account has expired.
-     *
-     * @return {@code true} if the account is non-expired; {@code false} otherwise.
-     */
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.isAccountNonExpired;
-    }
 
-    /**
-     * Indicates whether the user is locked or unlocked.
-     *
-     * @return {@code true} if the account is not locked; {@code false} otherwise.
-     */
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.isAccountNonLocked;
-    }
 
-    /**
-     * Indicates whether the user's credentials (password) have expired.
-     *
-     * @return {@code true} if the credentials are non-expired; {@code false} otherwise.
-     */
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.isCredentialsNonExpired;
-    }
-
-    /**
-     * Indicates whether the user is enabled or disabled.
-     *
-     * @return {@code true} if the user is enabled; {@code false} otherwise.
-     */
-    @Override
-    public boolean isEnabled() {
-        return this.isEnabled;
-    }
 }

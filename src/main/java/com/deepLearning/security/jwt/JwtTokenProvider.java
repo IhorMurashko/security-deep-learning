@@ -58,7 +58,10 @@ public class JwtTokenProvider {
         long refreshTokenExpirationMs = 2592000000L;
         Date expiryDate = new Date(now.getTime() + refreshTokenExpirationMs);
 
-        return Jwts.builder().subject(userDetails.getUsername()).issuedAt(now).expiration(expiryDate)
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(now)
+                .expiration(expiryDate)
                 .claim("token_type", "refreshToken")
                 .signWith(key)
                 .compact();
@@ -82,7 +85,10 @@ public class JwtTokenProvider {
         long accessTokenExpirationMs = 180000;
         Date expirationDate = new Date(now.getTime() + accessTokenExpirationMs);
 
-        return Jwts.builder().subject(userDetails.getUsername()).issuedAt(now).expiration(expirationDate)
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .issuedAt(now)
+                .expiration(expirationDate)
                 .claim("token_type", "accessToken")
                 .claim("authorities", userDetails.getAuthorities())
                 .signWith(key)

@@ -26,7 +26,7 @@ import java.util.Set;
  * <ul>
  *   <li>{@code UserService} for user persistence and existence checks.</li>
  *   <li>{@code PasswordEncoder} to encode user passwords.</li>
- *   <li>{@code UserDetailsService} to load user-specific data during authentication.</li>
+ *   <li>{@code UserDetailsService} to load user-specific data.sql during authentication.</li>
  *   <li>{@code JwtTokenProvider} to generate JWT access and refresh tokens.</li>
  * </ul>
  *

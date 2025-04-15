@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.NonNull;
 
 /**
- * AuthCredentials is a simple data transfer object (DTO) that represents
+ * AuthCredentials is a simple data.sql transfer object (DTO) that represents
  * user authentication credentials.
  * <p>
  * This record holds two non-null fields:

@@ -30,7 +30,7 @@ import java.util.Optional;
  */
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService{
 
     /**
      * Repository for performing CRUD operations on User entities.
@@ -99,20 +99,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public boolean isExistUsername(@NonNull String username) {
         return userRepo.existsUserByUsername(username);
-    }
-
-    /**
-     * Loads the user by username for authentication purposes.
-     * <p>
-     * If the user is not found, a {@link UsernameNotFoundException} is thrown.
-     *
-     * @param username the username of the user to load.
-     * @return a {@link UserDetails} object representing the user.
-     * @throws UsernameNotFoundException if the user is not found.
-     */
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

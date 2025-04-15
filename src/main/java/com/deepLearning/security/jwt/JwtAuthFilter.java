@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,7 +51,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
 
     /**
-     * UserDetailsService loads user-specific data during authentication.
+     * UserDetailsService loads user-specific data.sql during authentication.
      */
     private final UserDetailsService userDetailsService;
 
@@ -66,11 +67,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
      * and ensures that it is an access token (not a refresh token). If validation is successful, it sets the authentication
      * in the SecurityContext. Otherwise, it sends a 401 Unauthorized error.
      *
-     * @param request the HttpServletRequest
-     * @param response the HttpServletResponse
+     * @param request     the HttpServletRequest
+     * @param response    the HttpServletResponse
      * @param filterChain the FilterChain to pass the request and response along the chain
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs during filtering
+     * @throws IOException      if an I/O error occurs during filtering
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request,

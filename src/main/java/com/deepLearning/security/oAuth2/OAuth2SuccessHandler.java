@@ -3,6 +3,7 @@ package com.deepLearning.security.oAuth2;
 import com.deepLearning.security.jwt.JwtTokenProvider;
 import com.deepLearning.security.model.Roles;
 import com.deepLearning.security.model.User;
+import com.deepLearning.security.userServices.CustomUserDetails;
 import com.deepLearning.security.userServices.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,20 +68,23 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         final String email = oAuth2User.getAttribute("email");
 
         User user;
+
+        CustomUserDetails userDetails = null;
+
         if (userService.isExistUsername(email)) {
-            user = (User) userDetailsService.loadUserByUsername(email);
+            userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(email);
         } else {
 
             // Create new user with default role ROLE_USER using an immutable list
-            user = userService.save(new User(
+            userDetails = new CustomUserDetails(userService.save(new User(
                     email,
                     null,
                     oAuth2User.getAttribute("picture"),
                     Set.of(Roles.ROLE_USER)
-            ));
+            )));
         }
 
-        final String token = jwtTokenProvider.generateAccessToken(user);
+        final String token = jwtTokenProvider.generateAccessToken(userDetails);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:8080/home/user")
                 .queryParam("token", token)

@@ -3,7 +3,7 @@ package com.deepLearning.security.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * A data transfer object (DTO) representing authentication tokens.
+ * A data.sql transfer object (DTO) representing authentication tokens.
  * <p>
  * This record encapsulates an access token and a refresh token,
  * which are issued upon successful authentication.
