@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * LogoutController provides an endpoint for revoking user tokens during logout.
  * <p>
- * This controller exposes a POST endpoint at {@code /api/log/logout} that accepts token data
+ * This controller exposes a POST endpoint at {@code /api/log/logout} that accepts token data.sql
  * (typically containing an access token and/or a refresh token) in JSON format. Upon receiving the tokens,
  * the controller calls the {@code revokeToken} method of {@code RevokedTokenService} to add the tokens to
  * a blacklist. This prevents further use of the tokens for authentication.

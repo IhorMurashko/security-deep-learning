@@ -33,7 +33,7 @@ public class JwtTokenManager {
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
-     * Loads user-specific data during authentication.
+     * Loads user-specific data.sql during authentication.
      */
     private final UserDetailsService userDetailsService;
 
@@ -54,6 +54,7 @@ public class JwtTokenManager {
      */
     public TokensDto manageTokens(TokensDto tokens) {
         final String refreshToken = tokens.refreshToken();
+
         String newAccessToken = null;
         String newRefreshToken = null;
 
@@ -65,10 +66,12 @@ public class JwtTokenManager {
             if (jwtTokenProvider.isRefreshTokenExpiredSoon(refreshToken)) {
                 newRefreshToken = jwtTokenProvider.generateRefreshToken(user);
             }
+        } else {
+            throw new IllegalArgumentException("Invalid refresh token");
         }
 
         return new TokensDto(newAccessToken,
-                newRefreshToken == null
+                newRefreshToken != null
                         ? newRefreshToken
                         : tokens.refreshToken()
         );

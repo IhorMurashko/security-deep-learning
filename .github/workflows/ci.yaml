@@ -26,10 +26,6 @@ jobs:
         env:
           oauth2.google.client-id: ${{ secrets.OAUTH2_GOOGLE_CLIENT_ID }}
           oauth2.google.client-secret: ${{ secrets.OAUTH2_GOOGLE_CLIENT_SECRET }}
-          # Можно добавить другие переменные, если нужно, например, для БД:
-          # DB_URL: ${{ secrets.DB_URL }}
-          # DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          # DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           SPRING_PROFILES_ACTIVE: dev
         run: mvn clean package -Pdev -Dmaven.test.skip=false
 

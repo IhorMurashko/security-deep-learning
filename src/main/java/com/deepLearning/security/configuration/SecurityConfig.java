@@ -71,7 +71,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     /**
-     * Service used for loading user-specific data during authentication.
+     * Service used for loading user-specific data.sql during authentication.
      */
     private final UserDetailsService userDetailsService;
 

@@ -19,8 +19,8 @@ spring:
     init:
       mode: always
 
-#  config:
-#    import: "file:/home/developer/java_projects/credentials.properties"
+  config:
+    import: "file:/home/developer/java_projects/credentials.properties"
   security:
     oauth2:
       client:

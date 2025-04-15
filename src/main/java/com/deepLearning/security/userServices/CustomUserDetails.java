@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public record CustomUserDetailsService(User user) implements UserDetails {
+public record CustomUserDetails(User user) implements UserDetails {
 
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.

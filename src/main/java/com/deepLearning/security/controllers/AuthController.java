@@ -29,7 +29,7 @@ public class AuthController {
     @Operation(summary = "User registration", description = "Registers a new user with provided credentials")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User successfully registered"),
-            @ApiResponse(responseCode = "400", description = "Invalid registration data")
+            @ApiResponse(responseCode = "400", description = "Invalid registration data.sql")
     })
     @PostMapping("/sign-up")
     @PreAuthorize("isAnonymous()")
